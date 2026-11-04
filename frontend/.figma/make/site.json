@@ -1,0 +1,14 @@
+{
+  "title": "AI Medicine Recommendation System",
+  "description": "Academic healthcare decision-support system. Provides model-based results, symptom analysis, and medicine information.",
+  "icons": {
+    "icon": "/favicon.svg"
+  },
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
