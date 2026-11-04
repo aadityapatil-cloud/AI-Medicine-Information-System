@@ -1,42 +1,46 @@
-import { useEffect, useState } from "react";
-import { translations, type Language } from "../translations";
+import { useEffect, useState } from "react"
+import { translations, type Language } from "../translations"
 
 interface WelcomePopupProps {
-  userName?: string;
-  onClose: () => void;
-  lang?: Language;
+  userName?: string
+  onClose: () => void
+  lang?: Language
 }
 
-export function WelcomePopup({ userName, onClose, lang = "en" }: WelcomePopupProps) {
-  const [isClosing, setIsClosing] = useState(false);
-  const [secondsRemaining, setSecondsRemaining] = useState(5);
+export function WelcomePopup({
+  userName,
+  onClose,
+  lang = "en",
+}: WelcomePopupProps) {
+  const [isClosing, setIsClosing] = useState(false)
+  const [secondsRemaining, setSecondsRemaining] = useState(5)
 
-  const t = translations[lang] || translations.en;
+  const t = translations[lang] || translations.en
 
   useEffect(() => {
     // 1-second interval to update remaining seconds display
     const interval = setInterval(() => {
-      setSecondsRemaining((prev) => (prev > 1 ? prev - 1 : 0));
-    }, 1000);
+      setSecondsRemaining((prev) => (prev > 1 ? prev - 1 : 0))
+    }, 1000)
 
     // Auto-dismiss automatically after at least 5 seconds
     const autoDismissTimer = setTimeout(() => {
-      handleDismiss();
-    }, 5000);
+      handleDismiss()
+    }, 5000)
 
     return () => {
-      clearInterval(interval);
-      clearTimeout(autoDismissTimer);
-    };
-  }, []);
+      clearInterval(interval)
+      clearTimeout(autoDismissTimer)
+    }
+  }, [])
 
   const handleDismiss = () => {
-    if (isClosing) return;
-    setIsClosing(true);
+    if (isClosing) return
+    setIsClosing(true)
     setTimeout(() => {
-      onClose();
-    }, 300);
-  };
+      onClose()
+    }, 300)
+  }
 
   return (
     <div
@@ -98,19 +102,13 @@ export function WelcomePopup({ userName, onClose, lang = "en" }: WelcomePopupPro
           {lang === "en" ? t.welcome : `${t.welcome} (Welcome)`}
         </h1>
 
-        {userName && (
-          <p className="welcome-popup-user">
-            {userName}
-          </p>
-        )}
+        {userName && <p className="welcome-popup-user">{userName}</p>}
 
         <h2 className="welcome-popup-system">
           {lang === "en" ? t.systemName : `${t.systemName} (AI Medicine)`}
         </h2>
 
-        <p className="welcome-popup-desc">
-          {t.welcomeDesc}
-        </p>
+        <p className="welcome-popup-desc">{t.welcomeDesc}</p>
 
         {/* 5-Second Animated Progress Bar */}
         <div className="welcome-popup-progress-container">
@@ -134,5 +132,5 @@ export function WelcomePopup({ userName, onClose, lang = "en" }: WelcomePopupPro
         </div>
       </div>
     </div>
-  );
+  )
 }

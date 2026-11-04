@@ -31,178 +31,27 @@ import type {
   PatientUser,
   PredictionSuccessResponse,
 } from "./types"
+import { Icon, type IconName } from "./components/Icon"
+import { PatientProfileView } from "./components/features/PatientProfileView"
+import { DoctorConsultationView } from "./components/features/DoctorConsultationView"
+import { MedicalStoresView } from "./components/features/MedicalStoresView"
+import { NearbyHospitalsView } from "./components/features/NearbyHospitalsView"
+import { MedicineRemindersView } from "./components/features/MedicineRemindersView"
+import { PrescriptionUploadView } from "./components/features/PrescriptionUploadView"
+import { HealthChatbotView } from "./components/features/HealthChatbotView"
+import { MedicineInteractionView } from "./components/features/MedicineInteractionView"
+import { EmergencySosView } from "./components/features/EmergencySosView"
+import { FamilyProfilesView } from "./components/features/FamilyProfilesView"
+import { HealthHistoryView } from "./components/features/HealthHistoryView"
+import { FeedbackSupportView } from "./components/features/FeedbackSupportView"
+import { VitalsTrackerView } from "./components/features/VitalsTrackerView"
+import { GenericSubstituteView } from "./components/features/GenericSubstituteView"
+import { DoctorPortalView } from "./components/features/DoctorPortalView"
+import { SystemAnalyticsView } from "./components/features/SystemAnalyticsView"
+import { ExplainableAiView } from "./components/features/ExplainableAiView"
+import { MainDashboardView } from "./components/features/MainDashboardView"
 
-type Screen = "dashboard" | "checker" | "results" | "medicines" | "about"
-type IconName = "activity" | "alert" | "arrow" | "bell" | "brain" | "chart" | "check" | "chevron" | "close" | "dashboard" | "dots" | "filter" | "heart" | "info" | "logout" | "menu" | "medicine" | "pulse" | "search" | "shield" | "sparkles" | "user"
-
-const navItems: { id: Screen; label: string; icon: IconName }[] = [
-  { id: "dashboard", label: "Dashboard", icon: "dashboard" },
-  { id: "checker", label: "Symptom Checker", icon: "activity" },
-  { id: "results", label: "Prediction Results", icon: "chart" },
-  { id: "medicines", label: "Medicine Information", icon: "medicine" },
-  { id: "about", label: "About the Project", icon: "info" },
-]
-
-const featureCards: {
-  icon: IconName
-  title: string
-  text: string
-  tone: string
-}[] = [
-  {
-    icon: "activity",
-    title: "Condition Prediction",
-    text: "Explore model-based patterns from selected symptoms.",
-    tone: "blue",
-  },
-  {
-    icon: "brain",
-    title: "Explainable AI",
-    text: "See which inputs influenced the model's output.",
-    tone: "violet",
-  },
-  {
-    icon: "medicine",
-    title: "Medicine Information",
-    text: "Review records available in the connected dataset.",
-    tone: "teal",
-  },
-  {
-    icon: "shield",
-    title: "Safety Information",
-    text: "Read clearly labelled medicine safety information.",
-    tone: "amber",
-  },
-]
-
-function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
-  const paths: Record<IconName, React.ReactNode> = {
-    activity: <path d="M3 12h4l2.2-6 4.2 12 2.3-6H21" />,
-    alert: (
-      <>
-        <path d="M12 9v4" />
-        <path d="M12 17h.01" />
-        <path d="M10.3 3.6 2.4 18a2 2 0 0 0 1.8 3h15.6a2 2 0 0 0 1.8-3L13.7 3.6a2 2 0 0 0-3.4 0Z" />
-      </>
-    ),
-    arrow: (
-      <>
-        <path d="M5 12h14" />
-        <path d="m14 7 5 5-5 5" />
-      </>
-    ),
-    bell: (
-      <>
-        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-      </>
-    ),
-    brain: (
-      <>
-        <path d="M9.5 4A3.5 3.5 0 0 0 6 7.5v.3A3.5 3.5 0 0 0 5 14.5 3.5 3.5 0 0 0 9.5 20" />
-        <path d="M14.5 4A3.5 3.5 0 0 1 18 7.5v.3a3.5 3.5 0 0 1 1 6.7 3.5 3.5 0 0 1-4.5 5.5" />
-        <path d="M12 3v18M8 10h4M12 14h4" />
-      </>
-    ),
-    chart: (
-      <>
-        <path d="M4 19V9" />
-        <path d="M10 19V5" />
-        <path d="M16 19v-7" />
-        <path d="M22 19H2" />
-      </>
-    ),
-    check: <path d="m5 12 4 4L19 6" />,
-    chevron: <path d="m9 18 6-6-6-6" />,
-    close: (
-      <>
-        <path d="m6 6 12 12" />
-        <path d="m18 6-12 12" />
-      </>
-    ),
-    dashboard: (
-      <>
-        <rect x="3" y="3" width="7" height="7" rx="2" />
-        <rect x="14" y="3" width="7" height="7" rx="2" />
-        <rect x="3" y="14" width="7" height="7" rx="2" />
-        <rect x="14" y="14" width="7" height="7" rx="2" />
-      </>
-    ),
-    dots: (
-      <>
-        <circle cx="12" cy="12" r="1.5" />
-        <circle cx="19" cy="12" r="1.5" />
-        <circle cx="5" cy="12" r="1.5" />
-      </>
-    ),
-    filter: <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />,
-    heart: (
-      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-    ),
-    info: (
-      <>
-        <circle cx="12" cy="12" r="9" />
-        <path d="M12 11v5" />
-        <path d="M12 8h.01" />
-      </>
-    ),
-    logout: (
-      <>
-        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-        <polyline points="16 17 21 12 16 7" />
-        <line x1="21" y1="12" x2="9" y2="12" />
-      </>
-    ),
-    menu: <path d="M4 7h16M4 12h16M4 17h16" />,
-    medicine: (
-      <>
-        <path d="M10.5 6.5 17.5 13.5" />
-        <path d="M8.4 19.6a5 5 0 0 1-7-7l9.2-9.2a5 5 0 0 1 7 7Z" />
-        <path d="M14 17h7M17.5 13.5v7" />
-      </>
-    ),
-    pulse: <path d="M22 12h-4l-3 9L9 3l-3 9H2" />,
-    search: (
-      <>
-        <circle cx="11" cy="11" r="7" />
-        <path d="m20 20-4-4" />
-      </>
-    ),
-    shield: (
-      <>
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
-        <path d="m9 12 2 2 4-4" />
-      </>
-    ),
-    sparkles: (
-      <>
-        <path d="m12 3-1.2 3.8L7 8l3.8 1.2L12 13l1.2-3.8L17 8l-3.8-1.2Z" />
-        <path d="m5 15-.7 2.3L2 18l2.3.7L5 21l.7-2.3L8 18l-2.3-.7Z" />
-      </>
-    ),
-    user: (
-      <>
-        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-        <circle cx="12" cy="7" r="4" />
-      </>
-    ),
-  }
-  return (
-    <svg
-      aria-hidden="true"
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {paths[name]}
-    </svg>
-  )
-}
+export type Screen = "dashboard" | "checker" | "results" | "profile" | "doctors" | "stores" | "hospitals" | "reminders" | "prescriptions" | "chatbot" | "interactions" | "emergency" | "family" | "history" | "feedback" | "medicines" | "xai" | "vitals" | "generics" | "doctor_portal" | "analytics" | "about"
 
 function Brand({
   compact = false,
@@ -290,6 +139,7 @@ function TopBar({
   onOpenMenu,
   currentUser,
   onLogout,
+  onNavigate,
   lang,
   onLanguageChange,
   t,
@@ -298,6 +148,7 @@ function TopBar({
   onOpenMenu: () => void
   currentUser: PatientUser | null
   onLogout: () => void
+  onNavigate: (screen: Screen) => void
   lang: Language
   onLanguageChange: (lang: Language) => void
   t: Translations
@@ -365,24 +216,117 @@ function TopBar({
 
   const titles: Record<Screen, { title: string; subtitle: string }> = {
     dashboard: {
-      title: t.dashboardTitle,
-      subtitle: t.dashboardSubtitle,
+      title: "Clinical Healthcare Dashboard",
+      subtitle:
+        "21-feature clinical AI decision-support platform and patient care suite.",
     },
     checker: {
-      title: t.checkerTitle,
-      subtitle: t.checkerSubtitle,
+      title: t.checkerTitle || "Clinical Symptom Checker",
+      subtitle:
+        t.checkerSubtitle ||
+        "Select clinical signs across 132 validated feature vectors.",
     },
     results: {
-      title: t.resultsTitle,
-      subtitle: t.resultsSubtitle,
+      title: t.resultsTitle || "AI Diagnosis & Recommendations",
+      subtitle:
+        t.resultsSubtitle ||
+        "Logistic regression predictions with pharmacology verification.",
+    },
+    profile: {
+      title: "Patient Electronic Health Record (EHR)",
+      subtitle:
+        "Personal medical baseline, allergies, vitals, and emergency dispatch contact.",
+    },
+    doctors: {
+      title: "Doctor Consultation & Telehealth",
+      subtitle:
+        "Schedule in-person clinic visits or encrypted HD video consultations.",
+    },
+    stores: {
+      title: "Nearby Medical Stores & Pharmacies",
+      subtitle: "24x7 chemist network, live inventory lookup, and directions.",
+    },
+    hospitals: {
+      title: "Nearby Emergency Hospitals",
+      subtitle:
+        "Trauma centers, ICU beds, 24x7 ambulances, and emergency hotlines.",
+    },
+    reminders: {
+      title: "Medicine Reminders & Dose Tracker",
+      subtitle:
+        "Daily medication schedule, meal relations, and adherence logging.",
+    },
+    prescriptions: {
+      title: "Prescription Upload & Document Vault",
+      subtitle:
+        "Encrypted repository for prescriptions, lab tests, and discharge summaries.",
+    },
+    chatbot: {
+      title: "AI Health Chatbot & Triage Assistant",
+      subtitle:
+        "24/7 conversational assistance for dosage guidance, precautions, and home care.",
+    },
+    interactions: {
+      title: "Medicine Interaction Checker",
+      subtitle:
+        "Detect severe drug-drug contraindications and adverse reactions.",
+    },
+    emergency: {
+      title: "Emergency SOS & Critical Response",
+      subtitle:
+        "Single-tap emergency distress signal with live GPS coordinates.",
+    },
+    family: {
+      title: "Family Health Profiles & Dependents",
+      subtitle:
+        "Manage customized health baselines for spouse, children, and parents.",
+    },
+    history: {
+      title: "Health History & Clinical Timeline",
+      subtitle:
+        "Chronological audit trail of diagnostic runs, consultations, and lab records.",
+    },
+    feedback: {
+      title: "Feedback, Ratings & Help Center",
+      subtitle:
+        "Submit quality reviews, report technical issues, and read FAQs.",
     },
     medicines: {
-      title: t.medicinesTitle,
-      subtitle: t.medicinesSubtitle,
+      title: t.medicinesTitle || "Medicine Directory & Catalog",
+      subtitle:
+        t.medicinesSubtitle ||
+        "Comprehensive reference covering 32,000+ formulations.",
+    },
+    xai: {
+      title: "Explainable AI (XAI) Attribution Breakdown",
+      subtitle:
+        "Transparent mathematical feature weights and evidence distributions.",
+    },
+    vitals: {
+      title: "Health Vitals & Biometric Tracker",
+      subtitle:
+        "Track blood pressure, fasting glucose, resting pulse, SpO2, and BMI.",
+    },
+    generics: {
+      title: "Generic Medicine & Substitute Finder",
+      subtitle:
+        "Save up to 80% with bioequivalent WHO-GMP certified generic drugs.",
+    },
+    doctor_portal: {
+      title: "Doctor Integration Portal & Digital Rx Pad",
+      subtitle:
+        "Physician workspace for reviewing appointments and issuing signed e-prescriptions.",
+    },
+    analytics: {
+      title: "System Analytics & Health Telemetry",
+      subtitle:
+        "Real-time infrastructure health, ML accuracy metrics, and active users.",
     },
     about: {
-      title: t.aboutTitle,
-      subtitle: t.aboutSubtitle,
+      title: t.aboutTitle || "System Architecture & Documentation",
+      subtitle:
+        t.aboutSubtitle ||
+        "Technical pipeline specifications and research methodology.",
     },
   }
 
@@ -407,9 +351,27 @@ function TopBar({
         </div>
       </div>
 
-      
-
       <div className="top-header-right" ref={popoverRef}>
+        {/* Quick Emergency SOS button */}
+        <button
+          type="button"
+          className="btn btn--secondary"
+          style={{
+            background: "#fef2f2",
+            color: "#dc2626",
+            borderColor: "#fca5a5",
+            fontWeight: 800,
+            fontSize: "12px",
+            padding: "6px 12px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+          }}
+          onClick={() => onNavigate("emergency")}
+        >
+          <Icon name="alert" size={15} /> 🚨 SOS
+        </button>
+
         {/* 3-Language Selector: English, Marathi, Hindi */}
         <LanguageSelector
           currentLang={lang}
@@ -550,6 +512,31 @@ function TopBar({
                 </span>
               </div>
             </div>
+            <button
+              type="button"
+              className="user-dropdown-btn"
+              style={{
+                padding: "10px 14px",
+                borderBottom: "1px solid #f1f5f9",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                width: "100%",
+                background: "none",
+                border: "none",
+                textAlign: "left",
+                cursor: "pointer",
+                fontWeight: 600,
+                fontSize: "13px",
+              }}
+              onClick={() => {
+                setUserMenuOpen(false)
+                onNavigate("profile")
+              }}
+            >
+              <Icon name="user" size={16} />
+              <span>View Health Record (EHR)</span>
+            </button>
             <button
               type="button"
               className="user-dropdown-btn user-dropdown-btn--logout"
@@ -996,9 +983,9 @@ function Dashboard({
             <span className="status-badge status-badge--active">Live</span>
           </div>
           <p>
-            Doctors can register, verify credentials, manage availability, review
-            appointments, and securely save consultation notes without exposing
-            private meeting details.
+            Doctors can register, verify credentials, manage availability,
+            review appointments, and securely save consultation notes without
+            exposing private meeting details.
           </p>
           <div className="welcome-actions">
             <Button
@@ -1247,8 +1234,6 @@ function Dashboard({
           </div>
         </article>
       </section>
-
-      
 
       {/* Row 3: Supported Disease Explorer Table */}
       <section className="card table-card">
@@ -1642,7 +1627,9 @@ function Results({
           <strong style={{ fontSize: "16px", color: "var(--red, #ef4444)" }}>
             EMERGENCY ADVISORY: Potential Emergency Symptoms Detected
           </strong>
-          <span style={{ fontSize: "14px", marginTop: "6px", display: "block" }}>
+          <span
+            style={{ fontSize: "14px", marginTop: "6px", display: "block" }}
+          >
             {prediction.message ||
               "Potential emergency symptoms detected. Seek emergency medical care immediately. Do not wait for an AI prediction."}
           </span>
@@ -1658,16 +1645,33 @@ function Results({
           </div>
         </Notice>
 
-        <section className="card" style={{ padding: "24px", marginTop: "16px", borderLeft: "4px solid #ef4444" }}>
-          <h3 style={{ color: "#b91c1c", marginBottom: "8px" }}>Emergency Protocol Notice</h3>
+        <section
+          className="card"
+          style={{
+            padding: "24px",
+            marginTop: "16px",
+            borderLeft: "4px solid #ef4444",
+          }}
+        >
+          <h3 style={{ color: "#b91c1c", marginBottom: "8px" }}>
+            Emergency Protocol Notice
+          </h3>
           <p style={{ color: "#475569", lineHeight: "1.6" }}>
-            Symptoms such as chest pain, breathlessness, and profuse sweating can indicate life-threatening conditions requiring acute emergency intervention. In accordance with clinical safety guidelines, machine learning predictions and medicine records are intentionally suppressed to avoid delay in seeking medical attention.
+            Symptoms such as chest pain, breathlessness, and profuse sweating
+            can indicate life-threatening conditions requiring acute emergency
+            intervention. In accordance with clinical safety guidelines, machine
+            learning predictions and medicine records are intentionally
+            suppressed to avoid delay in seeking medical attention.
           </p>
           <div className="result-symptoms" style={{ marginTop: "16px" }}>
             <span>Reported symptoms</span>
             <div className="chips">
               {prediction.input_symptoms.map((symptomKey) => (
-                <span className="chip chip--muted" key={symptomKey} style={{ borderColor: "#fca5a5" }}>
+                <span
+                  className="chip chip--muted"
+                  key={symptomKey}
+                  style={{ borderColor: "#fca5a5" }}
+                >
                   <Icon name="alert" size={13} />
                   {getSymptomLabel(symptomKey)}
                 </span>
@@ -1712,10 +1716,18 @@ function Results({
           </div>
         </Notice>
 
-        <section className="card" style={{ padding: "24px", marginTop: "16px" }}>
-          <h3 style={{ marginBottom: "8px" }}>Multi-Symptom Baseline Required</h3>
+        <section
+          className="card"
+          style={{ padding: "24px", marginTop: "16px" }}
+        >
+          <h3 style={{ marginBottom: "8px" }}>
+            Multi-Symptom Baseline Required
+          </h3>
           <p style={{ color: "#475569", lineHeight: "1.6" }}>
-            Our diagnostic classification pipeline requires at least 3 clinical features to safely compute pattern associations across 41 condition profiles. Isolated symptoms yield ambiguous classifications that do not meet system safety thresholds.
+            Our diagnostic classification pipeline requires at least 3 clinical
+            features to safely compute pattern associations across 41 condition
+            profiles. Isolated symptoms yield ambiguous classifications that do
+            not meet system safety thresholds.
           </p>
           <div className="result-symptoms" style={{ marginTop: "16px" }}>
             <span>Currently selected ({prediction.input_symptoms.length})</span>
@@ -1743,7 +1755,10 @@ function Results({
 
   // --- Handle Uncertain Prediction Status (Confidence < 50%) ---
   if (prediction.prediction_status === "uncertain") {
-    const confVal = prediction.model_confidence != null ? (prediction.model_confidence * 100).toFixed(1) : null
+    const confVal =
+      prediction.model_confidence != null
+        ? (prediction.model_confidence * 100).toFixed(1)
+        : null
     return (
       <>
         <PageHeader
@@ -1767,11 +1782,19 @@ function Results({
           </div>
         </Notice>
 
-        <section className="card" style={{ padding: "24px", marginTop: "16px" }}>
-          <h3 style={{ marginBottom: "8px" }}>Safety Threshold Safeguard Active</h3>
+        <section
+          className="card"
+          style={{ padding: "24px", marginTop: "16px" }}
+        >
+          <h3 style={{ marginBottom: "8px" }}>
+            Safety Threshold Safeguard Active
+          </h3>
           <p style={{ color: "#475569", lineHeight: "1.6" }}>
-            The combination of symptoms evaluated yielded a statistical confidence score of{" "}
-            {confVal ? <strong>{confVal}%</strong> : "under 50%"}, which falls below our clinical verification cutoff. Condition prediction and medicine records are withheld to prevent misguidance.
+            The combination of symptoms evaluated yielded a statistical
+            confidence score of{" "}
+            {confVal ? <strong>{confVal}%</strong> : "under 50%"}, which falls
+            below our clinical verification cutoff. Condition prediction and
+            medicine records are withheld to prevent misguidance.
           </p>
           <div className="result-symptoms" style={{ marginTop: "16px" }}>
             <span>Evaluated symptoms</span>
@@ -1801,7 +1824,7 @@ function Results({
   const confidencePercent =
     prediction.model_confidence != null
       ? (prediction.model_confidence * 100).toFixed(1)
-      : "—" 
+      : "—"
   const positiveContributions =
     prediction.xai_explanation?.positive_contributions || []
   const negativeContributions =
@@ -2457,12 +2480,77 @@ export default function App() {
     setStoredLanguage(newLang)
   }
 
-  const localizedNavItems: { id: Screen; label: string; icon: IconName }[] = [
-    { id: "dashboard", label: t.navDashboard, icon: "dashboard" },
-    { id: "checker", label: t.navChecker, icon: "activity" },
-    { id: "results", label: t.navResults, icon: "chart" },
-    { id: "medicines", label: t.navMedicines, icon: "medicine" },
-    { id: "about", label: t.navAbout, icon: "info" },
+  const navSections: {
+    label: string
+    items: { id: Screen; label: string; icon: IconName }[]
+  }[] = [
+    {
+      label: "Overview",
+      items: [
+        {
+          id: "dashboard",
+          label: t.navDashboard || "Dashboard",
+          icon: "dashboard",
+        },
+      ],
+    },
+    {
+      label: "Clinical & AI",
+      items: [
+        {
+          id: "checker",
+          label: t.navChecker || "Symptom Checker",
+          icon: "activity",
+        },
+        {
+          id: "results",
+          label: t.navResults || "AI Recommendations",
+          icon: "chart",
+        },
+        { id: "chatbot", label: "AI Health Chatbot", icon: "message" },
+        { id: "interactions", label: "Drug Interactions", icon: "interaction" },
+        { id: "xai", label: "Explainable AI (XAI)", icon: "brain" },
+      ],
+    },
+    {
+      label: "Care & Network",
+      items: [
+        { id: "doctors", label: "Doctor Consultations", icon: "stethoscope" },
+        { id: "stores", label: "Nearby Pharmacies", icon: "store" },
+        { id: "hospitals", label: "Nearby Hospitals", icon: "hospital" },
+        { id: "generics", label: "Generic Substitutes", icon: "repeat" },
+        {
+          id: "medicines",
+          label: t.navMedicines || "Medicine Catalog",
+          icon: "medicine",
+        },
+        { id: "doctor_portal", label: "Doctor Portal", icon: "stethoscope" },
+      ],
+    },
+    {
+      label: "Personal Health",
+      items: [
+        { id: "profile", label: "Health Profile (EHR)", icon: "user" },
+        { id: "vitals", label: "Vitals & Biometrics", icon: "thermometer" },
+        { id: "reminders", label: "Medicine Reminders", icon: "clock" },
+        { id: "prescriptions", label: "Document Vault", icon: "prescription" },
+        { id: "family", label: "Family Profiles", icon: "users" },
+        { id: "history", label: "Health History", icon: "history" },
+      ],
+    },
+    {
+      label: "Safety & Support",
+      items: [
+        { id: "emergency", label: "🚨 Emergency SOS", icon: "alert" },
+        { id: "feedback", label: "Feedback & Support", icon: "star" },
+        { id: "analytics", label: "System Analytics", icon: "analytics" },
+        {
+          id: "about",
+          label: t.navAbout || "About & Architecture",
+          icon: "info",
+        },
+      ],
+    },
   ]
 
   const [screen, setScreen] = useState<Screen>("dashboard")
@@ -2653,19 +2741,35 @@ export default function App() {
             <Icon name="close" />
           </button>
         </div>
-        <nav aria-label="Main navigation">
-          <span className="nav-label">Workspace</span>
-          {localizedNavItems.map((item) => (
-            <button
-              className={screen === item.id ? "nav-item active" : "nav-item"}
-              key={item.id}
-              onClick={() => navigate(item.id)}
-              data-tooltip={item.label}
-              title={sidebarCollapsed ? item.label : undefined}
-            >
-              <Icon name={item.icon} size={19} />
-              <span>{item.label}</span>
-            </button>
+        <nav
+          aria-label="Main navigation"
+          style={{ overflowY: "auto", flex: 1, paddingRight: "4px" }}
+        >
+          {navSections.map((sec, sIdx) => (
+            <div key={sIdx} style={{ marginBottom: "14px" }}>
+              {!sidebarCollapsed && (
+                <span className="nav-label">{sec.label}</span>
+              )}
+              {sec.items.map((item) => (
+                <button
+                  className={
+                    screen === item.id ? "nav-item active" : "nav-item"
+                  }
+                  key={item.id}
+                  onClick={() => navigate(item.id)}
+                  data-tooltip={item.label}
+                  title={sidebarCollapsed ? item.label : undefined}
+                  style={
+                    item.id === "emergency" && screen !== item.id
+                      ? { color: "#dc2626", fontWeight: 700 }
+                      : undefined
+                  }
+                >
+                  <Icon name={item.icon} size={18} />
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </div>
           ))}
         </nav>
         <div className="sidebar-support">
@@ -2676,8 +2780,8 @@ export default function App() {
           <p>Educational support, never a clinical diagnosis.</p>
         </div>
         <div className="sidebar-footer">
-          <span>Academic Project</span>
-          <small>Decision support prototype</small>
+          <span>Clinical Healthcare Platform</span>
+          <small>All 21 features active</small>
         </div>
       </aside>
 
@@ -2707,18 +2811,27 @@ export default function App() {
           onOpenMenu={() => setMobileOpen(true)}
           currentUser={currentUser}
           onLogout={handleLogout}
+          onNavigate={navigate}
           lang={lang}
           onLanguageChange={handleLanguageChange}
           t={t}
         />
         <div className="content">
           {screen === "dashboard" && (
-            <Dashboard
+            <MainDashboardView
+              currentUser={currentUser}
               selected={selected}
               setSelected={setSelected}
               onAnalyse={(symptoms) => performAnalysis(symptoms)}
               navigate={navigate}
               disabled={analysing}
+            />
+          )}
+          {screen === "profile" && (
+            <PatientProfileView
+              currentUser={currentUser}
+              onUpdateUser={(updated) => setCurrentUser(updated)}
+              onNavigate={navigate}
             />
           )}
           {screen === "checker" && (
@@ -2739,7 +2852,63 @@ export default function App() {
               onModify={() => navigate("checker")}
             />
           )}
+          {screen === "doctors" && (
+            <DoctorConsultationView onNavigate={navigate} />
+          )}
+          {screen === "stores" && <MedicalStoresView onNavigate={navigate} />}
+          {screen === "hospitals" && (
+            <NearbyHospitalsView onNavigate={navigate} />
+          )}
+          {screen === "reminders" && (
+            <MedicineRemindersView onNavigate={navigate} />
+          )}
+          {screen === "prescriptions" && (
+            <PrescriptionUploadView onNavigate={navigate} />
+          )}
+          {screen === "chatbot" && <HealthChatbotView onNavigate={navigate} />}
+          {screen === "interactions" && (
+            <MedicineInteractionView
+              currentUser={currentUser}
+              onNavigate={navigate}
+            />
+          )}
+          {screen === "emergency" && (
+            <EmergencySosView currentUser={currentUser} onNavigate={navigate} />
+          )}
+          {screen === "family" && (
+            <FamilyProfilesView
+              currentUser={currentUser}
+              onNavigate={navigate}
+            />
+          )}
+          {screen === "history" && (
+            <HealthHistoryView
+              currentUser={currentUser}
+              onNavigate={navigate}
+            />
+          )}
+          {screen === "feedback" && (
+            <FeedbackSupportView onNavigate={navigate} />
+          )}
           {screen === "medicines" && <Medicines prediction={prediction} />}
+          {screen === "xai" && (
+            <ExplainableAiView prediction={prediction} onNavigate={navigate} />
+          )}
+          {screen === "vitals" && (
+            <VitalsTrackerView
+              currentUser={currentUser}
+              onNavigate={navigate}
+            />
+          )}
+          {screen === "generics" && (
+            <GenericSubstituteView onNavigate={navigate} />
+          )}
+          {screen === "doctor_portal" && (
+            <DoctorPortalView onNavigate={navigate} />
+          )}
+          {screen === "analytics" && (
+            <SystemAnalyticsView onNavigate={navigate} />
+          )}
           {screen === "about" && <About />}
         </div>
         <footer className="main-footer">

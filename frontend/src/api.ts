@@ -70,14 +70,20 @@ function getAuthHeaders(): Record<string, string> {
 }
 
 // Helper to cleanly extract and surface actual backend error messages
-async function parseResponseError(response: Response, defaultMessage: string): Promise<string> {
+async function parseResponseError(
+  response: Response,
+  defaultMessage: string,
+): Promise<string> {
   try {
     const rawText = await response.text()
     if (!rawText || !rawText.trim()) {
-      if (response.status === 409) return "An account with this email address or mobile number already exists."
-      if (response.status === 401) return "Invalid credentials. Please verify your details."
+      if (response.status === 409)
+        return "An account with this email address or mobile number already exists."
+      if (response.status === 401)
+        return "Invalid credentials. Please verify your details."
       if (response.status === 403) return "Access restricted."
-      if (response.status >= 500) return `Server error (${response.status}). Please check backend status.`
+      if (response.status >= 500)
+        return `Server error (${response.status}). Please check backend status.`
       return `${defaultMessage} (Status ${response.status})`
     }
 
@@ -89,7 +95,9 @@ async function parseResponseError(response: Response, defaultMessage: string): P
           return json.detail
             .map((item: any) => {
               if (typeof item === "string") return item
-              const loc = item?.loc?.filter((l: string) => l !== "body")?.join(" ")
+              const loc = item?.loc
+                ?.filter((l: string) => l !== "body")
+                ?.join(" ")
               const field = loc ? `[${loc}] ` : ""
               return `${field}${item?.msg || item?.message || JSON.stringify(item)}`
             })
@@ -140,12 +148,16 @@ export async function registerPatient(
     throw {
       type: "connection",
       statusCode: 0,
-      message: "Cannot connect to server. Please ensure the backend is running on port 8000 or check your internet connection.",
+      message:
+        "Cannot connect to server. Please ensure the backend is running on port 8000 or check your internet connection.",
     } as ApiError
   }
 
   if (!response.ok) {
-    const message = await parseResponseError(response, "Registration failed. Please check your inputs.")
+    const message = await parseResponseError(
+      response,
+      "Registration failed. Please check your inputs.",
+    )
     const error: ApiError = {
       type: "client",
       statusCode: response.status,
@@ -176,12 +188,16 @@ export async function loginPatient(
     throw {
       type: "connection",
       statusCode: 0,
-      message: "Cannot connect to server. Please ensure the backend is running on port 8000 or check your internet connection.",
+      message:
+        "Cannot connect to server. Please ensure the backend is running on port 8000 or check your internet connection.",
     } as ApiError
   }
 
   if (!response.ok) {
-    const message = await parseResponseError(response, "Invalid email or password. Please try again.")
+    const message = await parseResponseError(
+      response,
+      "Invalid email or password. Please try again.",
+    )
     const error: ApiError = {
       type: "client",
       statusCode: response.status,
@@ -196,7 +212,7 @@ export async function loginPatient(
 }
 
 export async function resetPatientPassword(
-  payload: ResetPasswordPayload
+  payload: ResetPasswordPayload,
 ): Promise<{ message: string }> {
   const response = await fetch(`${API_BASE}/auth/reset-password`, {
     method: "POST",
@@ -327,7 +343,10 @@ export async function registerDoctor(payload: {
   return data
 }
 
-export async function loginDoctor(payload: { email: string; password: string }): Promise<any> {
+export async function loginDoctor(payload: {
+  email: string
+  password: string
+}): Promise<any> {
   const response = await fetch(`${API_BASE}/doctor/login`, {
     method: "POST",
     headers: {
@@ -348,14 +367,23 @@ export async function loginDoctor(payload: { email: string; password: string }):
   return data
 }
 
-export async function fetchDoctors(params?: { specialization?: string; q?: string }): Promise<any> {
+export async function fetchDoctors(params?: {
+  specialization?: string
+  q?: string
+}): Promise<any> {
   const query = new URLSearchParams()
   if (params?.specialization) query.set("specialization", params.specialization)
   if (params?.q) query.set("q", params.q)
-  const response = await fetch(`${API_BASE}/doctors${query.toString() ? `?${query.toString()}` : ""}`)
+  const response = await fetch(
+    `${API_BASE}/doctors${query.toString() ? `?${query.toString()}` : ""}`,
+  )
   const data = await response.json().catch(() => null)
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load doctors." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load doctors.",
+    } as ApiError
   }
   return data
 }
@@ -364,25 +392,41 @@ export async function fetchDoctorById(doctorId: number): Promise<any> {
   const response = await fetch(`${API_BASE}/doctors/${doctorId}`)
   const data = await response.json().catch(() => null)
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Doctor details not available." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Doctor details not available.",
+    } as ApiError
   }
   return data
 }
 
 export async function fetchMyAppointments(): Promise<any> {
-  const response = await fetch(`${API_BASE}/appointments/my`, { headers: getAuthHeaders() })
+  const response = await fetch(`${API_BASE}/appointments/my`, {
+    headers: getAuthHeaders(),
+  })
   const data = await response.json().catch(() => null)
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load your appointments." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load your appointments.",
+    } as ApiError
   }
   return data
 }
 
 export async function fetchDoctorAppointments(): Promise<any> {
-  const response = await fetch(`${API_BASE}/doctor/appointments`, { headers: getAuthHeaders() })
+  const response = await fetch(`${API_BASE}/doctor/appointments`, {
+    headers: getAuthHeaders(),
+  })
   const data = await response.json().catch(() => null)
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load doctor appointments." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load doctor appointments.",
+    } as ApiError
   }
   return data
 }
@@ -400,21 +444,33 @@ export async function createAppointment(payload: {
   })
   const data = await response.json().catch(() => null)
   if (!response.ok) {
-    const message = data?.detail && typeof data.detail === "string" ? data.detail : "Appointment request failed."
+    const message =
+      data?.detail && typeof data.detail === "string"
+        ? data.detail
+        : "Appointment request failed."
     throw { type: "client", statusCode: response.status, message } as ApiError
   }
   return data
 }
 
-export async function updateAppointmentStatus(appointmentId: number, payload: { status: "accepted" | "rejected" | "cancelled"; notes?: string }): Promise<any> {
-  const response = await fetch(`${API_BASE}/appointments/${appointmentId}/status`, {
-    method: "POST",
-    headers: getAuthHeaders(),
-    body: JSON.stringify(payload),
-  })
+export async function updateAppointmentStatus(
+  appointmentId: number,
+  payload: { status: "accepted" | "rejected" | "cancelled"; notes?: string },
+): Promise<any> {
+  const response = await fetch(
+    `${API_BASE}/appointments/${appointmentId}/status`,
+    {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(payload),
+    },
+  )
   const data = await response.json().catch(() => null)
   if (!response.ok) {
-    const message = data?.detail && typeof data.detail === "string" ? data.detail : "Failed to update appointment status."
+    const message =
+      data?.detail && typeof data.detail === "string"
+        ? data.detail
+        : "Failed to update appointment status."
     throw { type: "client", statusCode: response.status, message } as ApiError
   }
   return data
@@ -424,7 +480,11 @@ export async function fetchEmergencySupport(): Promise<any> {
   const response = await fetch(`${API_BASE}/emergency/support`)
   const data = await response.json().catch(() => null)
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Emergency support data unavailable." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Emergency support data unavailable.",
+    } as ApiError
   }
   return data
 }
@@ -570,7 +630,9 @@ export async function updatePatientProfile(
       if (typeof data.detail === "string") {
         message = data.detail
       } else if (Array.isArray(data.detail) && data.detail.length > 0) {
-        message = data.detail.map((err: any) => err.msg || err.message).join("; ")
+        message = data.detail
+          .map((err: any) => err.msg || err.message)
+          .join("; ")
       }
     }
     const error: ApiError = {
@@ -601,10 +663,16 @@ export async function sendRegistrationOtp(
   const response = await fetch(`${API_BASE}/auth/otp/send`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ email: email.trim().lower(), full_name: fullName.trim() }),
+    body: JSON.stringify({
+      email: email.trim().toLowerCase(),
+      full_name: fullName.trim(),
+    }),
   })
   if (!response.ok) {
-    const message = await parseResponseError(response, "Failed to send OTP code.")
+    const message = await parseResponseError(
+      response,
+      "Failed to send OTP code.",
+    )
     throw { type: "client", statusCode: response.status, message } as ApiError
   }
   return response.json()
@@ -617,7 +685,10 @@ export async function verifyRegistrationOtp(
   const response = await fetch(`${API_BASE}/auth/otp/verify`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ email: email.trim().lower(), otp_code: otpCode.trim() }),
+    body: JSON.stringify({
+      email: email.trim().toLowerCase(),
+      otp_code: otpCode.trim(),
+    }),
   })
   if (!response.ok) {
     const message = await parseResponseError(response, "Invalid OTP code.")
@@ -632,7 +703,10 @@ export async function deletePatientAccount(): Promise<void> {
     headers: getAuthHeaders(),
   })
   if (!response.ok) {
-    const message = await parseResponseError(response, "Failed to deactivate account.")
+    const message = await parseResponseError(
+      response,
+      "Failed to deactivate account.",
+    )
     throw { type: "client", statusCode: response.status, message } as ApiError
   }
   clearAuthSession()
@@ -645,22 +719,37 @@ export async function deletePatientAccount(): Promise<void> {
 export async function fetchEmergencyInfo(): Promise<any> {
   const response = await fetch(`${API_BASE}/emergency/sos`)
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Emergency helpline unavailable." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Emergency helpline unavailable.",
+    } as ApiError
   }
   return response.json()
 }
 
-export async function triggerEmergencyAlert(lat?: number, lng?: number, notes?: string): Promise<any> {
+export async function triggerEmergencyAlert(
+  lat?: number,
+  lng?: number,
+  notes?: string,
+): Promise<any> {
   const params = new URLSearchParams()
   if (lat) params.set("lat", lat.toString())
   if (lng) params.set("lng", lng.toString())
   if (notes) params.set("notes", notes)
-  const response = await fetch(`${API_BASE}/emergency/alert?${params.toString()}`, {
-    method: "POST",
-    headers: getAuthHeaders(),
-  })
+  const response = await fetch(
+    `${API_BASE}/emergency/alert?${params.toString()}`,
+    {
+      method: "POST",
+      headers: getAuthHeaders(),
+    },
+  )
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to log emergency alert." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to log emergency alert.",
+    } as ApiError
   }
   return response.json()
 }
@@ -685,16 +774,26 @@ export async function fetchNearbyPlaces(params?: {
 
   const response = await fetch(`${API_BASE}/places/nearby?${query.toString()}`)
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load nearby places." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load nearby places.",
+    } as ApiError
   }
   const data = await response.json()
   return data.places || []
 }
 
 export async function searchPharmacyMedicines(query: string): Promise<any[]> {
-  const response = await fetch(`${API_BASE}/pharmacy/medicines?q=${encodeURIComponent(query.trim())}`)
+  const response = await fetch(
+    `${API_BASE}/pharmacy/medicines?q=${encodeURIComponent(query.trim())}`,
+  )
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to search pharmacy stock." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to search pharmacy stock.",
+    } as ApiError
   }
   const data = await response.json()
   return data.results || []
@@ -705,9 +804,15 @@ export async function searchPharmacyMedicines(query: string): Promise<any[]> {
 // -------------------------------------------------------------
 
 export async function fetchReminders(): Promise<any[]> {
-  const response = await fetch(`${API_BASE}/reminders`, { headers: getAuthHeaders() })
+  const response = await fetch(`${API_BASE}/reminders`, {
+    headers: getAuthHeaders(),
+  })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load reminders." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load reminders.",
+    } as ApiError
   }
   const data = await response.json()
   return data.reminders || []
@@ -730,7 +835,10 @@ export async function createReminder(payload: {
     body: JSON.stringify(payload),
   })
   if (!response.ok) {
-    const message = await parseResponseError(response, "Failed to create reminder.")
+    const message = await parseResponseError(
+      response,
+      "Failed to create reminder.",
+    )
     throw { type: "client", statusCode: response.status, message } as ApiError
   }
   return response.json()
@@ -742,26 +850,43 @@ export async function deleteReminder(reminderId: number): Promise<void> {
     headers: getAuthHeaders(),
   })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to cancel reminder." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to cancel reminder.",
+    } as ApiError
   }
 }
 
-export async function logReminderStatus(reminderId: number, status: "completed" | "missed"): Promise<any> {
+export async function logReminderStatus(
+  reminderId: number,
+  status: "completed" | "missed",
+): Promise<any> {
   const response = await fetch(`${API_BASE}/reminders/${reminderId}/log`, {
     method: "POST",
     headers: getAuthHeaders(),
     body: JSON.stringify({ status }),
   })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to record reminder status." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to record reminder status.",
+    } as ApiError
   }
   return response.json()
 }
 
 export async function fetchReminderHistory(): Promise<any[]> {
-  const response = await fetch(`${API_BASE}/reminders/history`, { headers: getAuthHeaders() })
+  const response = await fetch(`${API_BASE}/reminders/history`, {
+    headers: getAuthHeaders(),
+  })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load reminder history." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load reminder history.",
+    } as ApiError
   }
   const data = await response.json()
   return data.history || []
@@ -782,16 +907,25 @@ export async function uploadMedicalDocument(formData: FormData): Promise<any> {
     body: formData,
   })
   if (!response.ok) {
-    const message = await parseResponseError(response, "Document upload failed.")
+    const message = await parseResponseError(
+      response,
+      "Document upload failed.",
+    )
     throw { type: "client", statusCode: response.status, message } as ApiError
   }
   return response.json()
 }
 
 export async function fetchMedicalDocuments(): Promise<any[]> {
-  const response = await fetch(`${API_BASE}/documents`, { headers: getAuthHeaders() })
+  const response = await fetch(`${API_BASE}/documents`, {
+    headers: getAuthHeaders(),
+  })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load documents." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load documents.",
+    } as ApiError
   }
   const data = await response.json()
   return data.documents || []
@@ -803,7 +937,11 @@ export async function deleteMedicalDocument(docId: number): Promise<void> {
     headers: getAuthHeaders(),
   })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to delete document." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to delete document.",
+    } as ApiError
   }
 }
 
@@ -815,14 +953,20 @@ export function getDocumentDownloadUrl(docId: number): string {
 // AI HEALTH CHATBOT
 // -------------------------------------------------------------
 
-export async function sendChatbotMessage(query: string, lang: string = "en"): Promise<any> {
+export async function sendChatbotMessage(
+  query: string,
+  lang: string = "en",
+): Promise<any> {
   const response = await fetch(`${API_BASE}/chatbot/message`, {
     method: "POST",
     headers: getAuthHeaders(),
     body: JSON.stringify({ query: query.trim(), lang }),
   })
   if (!response.ok) {
-    const message = await parseResponseError(response, "Chatbot service temporarily unavailable.")
+    const message = await parseResponseError(
+      response,
+      "Chatbot service temporarily unavailable.",
+    )
     throw { type: "client", statusCode: response.status, message } as ApiError
   }
   return response.json()
@@ -842,7 +986,10 @@ export async function checkMedicineInteractions(
     body: JSON.stringify({ medicines, patient_allergies: patientAllergies }),
   })
   if (!response.ok) {
-    const message = await parseResponseError(response, "Interaction check failed.")
+    const message = await parseResponseError(
+      response,
+      "Interaction check failed.",
+    )
     throw { type: "client", statusCode: response.status, message } as ApiError
   }
   return response.json()
@@ -853,9 +1000,15 @@ export async function checkMedicineInteractions(
 // -------------------------------------------------------------
 
 export async function fetchPatientPrescriptions(): Promise<any[]> {
-  const response = await fetch(`${API_BASE}/prescriptions/my`, { headers: getAuthHeaders() })
+  const response = await fetch(`${API_BASE}/prescriptions/my`, {
+    headers: getAuthHeaders(),
+  })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load prescriptions." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load prescriptions.",
+    } as ApiError
   }
   const data = await response.json()
   return data.prescriptions || []
@@ -866,9 +1019,15 @@ export async function fetchPatientPrescriptions(): Promise<any[]> {
 // -------------------------------------------------------------
 
 export async function fetchFamilyMembers(): Promise<any[]> {
-  const response = await fetch(`${API_BASE}/family`, { headers: getAuthHeaders() })
+  const response = await fetch(`${API_BASE}/family`, {
+    headers: getAuthHeaders(),
+  })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load family members." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load family members.",
+    } as ApiError
   }
   const data = await response.json()
   return data.family_members || []
@@ -881,7 +1040,10 @@ export async function addFamilyMember(payload: any): Promise<any> {
     body: JSON.stringify(payload),
   })
   if (!response.ok) {
-    const message = await parseResponseError(response, "Failed to add family member.")
+    const message = await parseResponseError(
+      response,
+      "Failed to add family member.",
+    )
     throw { type: "client", statusCode: response.status, message } as ApiError
   }
   return response.json()
@@ -893,7 +1055,11 @@ export async function deleteFamilyMember(memberId: number): Promise<void> {
     headers: getAuthHeaders(),
   })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to remove family member." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to remove family member.",
+    } as ApiError
   }
 }
 
@@ -913,16 +1079,25 @@ export async function submitFeedback(payload: {
     body: JSON.stringify(payload),
   })
   if (!response.ok) {
-    const message = await parseResponseError(response, "Failed to submit feedback.")
+    const message = await parseResponseError(
+      response,
+      "Failed to submit feedback.",
+    )
     throw { type: "client", statusCode: response.status, message } as ApiError
   }
   return response.json()
 }
 
 export async function fetchMyFeedbacks(): Promise<any[]> {
-  const response = await fetch(`${API_BASE}/feedback/my`, { headers: getAuthHeaders() })
+  const response = await fetch(`${API_BASE}/feedback/my`, {
+    headers: getAuthHeaders(),
+  })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load feedback." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load feedback.",
+    } as ApiError
   }
   const data = await response.json()
   return data.feedbacks || []
@@ -933,49 +1108,88 @@ export async function fetchMyFeedbacks(): Promise<any[]> {
 // -------------------------------------------------------------
 
 export async function fetchAdminMetrics(): Promise<any> {
-  const response = await fetch(`${API_BASE}/admin/metrics`, { headers: getAuthHeaders() })
+  const response = await fetch(`${API_BASE}/admin/metrics`, {
+    headers: getAuthHeaders(),
+  })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load admin metrics." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load admin metrics.",
+    } as ApiError
   }
   const data = await response.json()
   return data.metrics || {}
 }
 
 export async function fetchAdminUsers(): Promise<any[]> {
-  const response = await fetch(`${API_BASE}/admin/users`, { headers: getAuthHeaders() })
+  const response = await fetch(`${API_BASE}/admin/users`, {
+    headers: getAuthHeaders(),
+  })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load user directory." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load user directory.",
+    } as ApiError
   }
   const data = await response.json()
   return data.users || []
 }
 
-export async function toggleUserStatusAdmin(userId: number, status: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/admin/users/${userId}/status?status_val=${status}`, {
-    method: "POST",
-    headers: getAuthHeaders(),
-  })
+export async function toggleUserStatusAdmin(
+  userId: number,
+  status: string,
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE}/admin/users/${userId}/status?status_val=${status}`,
+    {
+      method: "POST",
+      headers: getAuthHeaders(),
+    },
+  )
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to update user status." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to update user status.",
+    } as ApiError
   }
 }
 
 export async function fetchAdminFeedback(): Promise<any[]> {
-  const response = await fetch(`${API_BASE}/admin/feedback`, { headers: getAuthHeaders() })
+  const response = await fetch(`${API_BASE}/admin/feedback`, {
+    headers: getAuthHeaders(),
+  })
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to load customer feedback." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to load customer feedback.",
+    } as ApiError
   }
   const data = await response.json()
   return data.feedbacks || []
 }
 
-export async function updateAdminFeedbackStatus(feedbackId: number, status: string, notes: string = ""): Promise<void> {
-  const response = await fetch(`${API_BASE}/admin/feedback/${feedbackId}/status?status_val=${status}&admin_notes=${encodeURIComponent(notes)}`, {
-    method: "POST",
-    headers: getAuthHeaders(),
-  })
+export async function updateAdminFeedbackStatus(
+  feedbackId: number,
+  status: string,
+  notes: string = "",
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE}/admin/feedback/${feedbackId}/status?status_val=${status}&admin_notes=${encodeURIComponent(notes)}`,
+    {
+      method: "POST",
+      headers: getAuthHeaders(),
+    },
+  )
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to update feedback status." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to update feedback status.",
+    } as ApiError
   }
 }
 
@@ -984,9 +1198,15 @@ export async function updateAdminFeedbackStatus(feedbackId: number, status: stri
 // -------------------------------------------------------------
 
 export async function searchMedicinesDataset(query: string): Promise<any[]> {
-  const response = await fetch(`${API_BASE}/medicines/search?q=${encodeURIComponent(query.trim())}`)
+  const response = await fetch(
+    `${API_BASE}/medicines/search?q=${encodeURIComponent(query.trim())}`,
+  )
   if (!response.ok) {
-    throw { type: "client", statusCode: response.status, message: "Failed to search medicines." } as ApiError
+    throw {
+      type: "client",
+      statusCode: response.status,
+      message: "Failed to search medicines.",
+    } as ApiError
   }
   const data = await response.json()
   return data.results || []

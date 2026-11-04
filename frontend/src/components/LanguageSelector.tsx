@@ -1,25 +1,30 @@
-import { useState, useRef, useEffect } from "react";
-import type { Language } from "../translations";
+import { useState, useRef, useEffect } from "react"
+import type { Language } from "../translations"
 
 interface LanguageSelectorProps {
-  currentLang: Language;
-  onLanguageChange: (lang: Language) => void;
-  compact?: boolean;
+  currentLang: Language
+  onLanguageChange: (lang: Language) => void
+  compact?: boolean
 }
 
-const languages: { code: Language; label: string; nativeName: string; flag: string }[] = [
+const languages: {
+  code: Language
+  label: string
+  nativeName: string
+  flag: string
+}[] = [
   { code: "en", label: "English", nativeName: "English", flag: "🇬🇧" },
   { code: "mr", label: "Marathi", nativeName: "मराठी", flag: "🇮🇳" },
   { code: "hi", label: "Hindi", nativeName: "हिंदी", flag: "🇮🇳" },
-];
+]
 
 export function LanguageSelector({
   currentLang,
   onLanguageChange,
   compact = false,
 }: LanguageSelectorProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -27,14 +32,15 @@ export function LanguageSelector({
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false);
+        setIsOpen(false)
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
-  const currentOption = languages.find((l) => l.code === currentLang) || languages[0];
+  const currentOption =
+    languages.find((l) => l.code === currentLang) || languages[0]
 
   return (
     <div className="language-selector-wrapper" ref={dropdownRef}>
@@ -50,9 +56,7 @@ export function LanguageSelector({
         <span className="language-globe-icon" aria-hidden="true">
           🌐
         </span>
-        <span className="language-name-label">
-          {currentOption.nativeName}
-        </span>
+        <span className="language-name-label">{currentOption.nativeName}</span>
         <svg
           className={`language-chevron ${isOpen ? "rotate" : ""}`}
           width="12"
@@ -81,8 +85,8 @@ export function LanguageSelector({
                 currentLang === item.code ? "selected" : ""
               }`}
               onClick={() => {
-                onLanguageChange(item.code);
-                setIsOpen(false);
+                onLanguageChange(item.code)
+                setIsOpen(false)
               }}
               role="menuitem"
             >
@@ -113,5 +117,5 @@ export function LanguageSelector({
         </div>
       )}
     </div>
-  );
+  )
 }

@@ -1,64 +1,71 @@
-import { useEffect, useState } from "react";
-import type { PatientUser } from "../types";
+import { useEffect, useState } from "react"
+import type { PatientUser } from "../types"
 
 interface WelcomeAnimationProps {
-  patient: PatientUser;
-  onComplete: () => void;
+  patient: PatientUser
+  onComplete: () => void
 }
 
-export function WelcomeAnimation({ patient, onComplete }: WelcomeAnimationProps) {
-  const [stepIndex, setStepIndex] = useState(0);
-  const [progress, setProgress] = useState(15);
-  const [isFadingOut, setIsFadingOut] = useState(false);
+export function WelcomeAnimation({
+  patient,
+  onComplete,
+}: WelcomeAnimationProps) {
+  const [stepIndex, setStepIndex] = useState(0)
+  const [progress, setProgress] = useState(15)
+  const [isFadingOut, setIsFadingOut] = useState(false)
 
   const statusSteps = [
     "Verifying patient credentials and security tokens…",
     "Initializing 132 clinical symptom inference models…",
     "Synchronizing medicine safety and interaction databases…",
     "Welcome AI Medicine Clinical Decision Support platform is ready.",
-  ];
+  ]
 
   useEffect(() => {
     // Step progression
     const t1 = setTimeout(() => {
-      setStepIndex(1);
-      setProgress(45);
-    }, 600);
+      setStepIndex(1)
+      setProgress(45)
+    }, 600)
 
     const t2 = setTimeout(() => {
-      setStepIndex(2);
-      setProgress(75);
-    }, 1300);
+      setStepIndex(2)
+      setProgress(75)
+    }, 1300)
 
     const t3 = setTimeout(() => {
-      setStepIndex(3);
-      setProgress(100);
-    }, 2000);
+      setStepIndex(3)
+      setProgress(100)
+    }, 2000)
 
     const t4 = setTimeout(() => {
-      setIsFadingOut(true);
-    }, 2700);
+      setIsFadingOut(true)
+    }, 2700)
 
     const t5 = setTimeout(() => {
-      onComplete();
-    }, 3100);
+      onComplete()
+    }, 3100)
 
     return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
-      clearTimeout(t5);
-    };
-  }, [onComplete]);
+      clearTimeout(t1)
+      clearTimeout(t2)
+      clearTimeout(t3)
+      clearTimeout(t4)
+      clearTimeout(t5)
+    }
+  }, [onComplete])
 
   const handleSkip = () => {
-    setIsFadingOut(true);
-    setTimeout(onComplete, 300);
-  };
+    setIsFadingOut(true)
+    setTimeout(onComplete, 300)
+  }
 
   return (
-    <div className={`welcome-screen ${isFadingOut ? "welcome-screen--fade-out" : ""}`}>
+    <div
+      className={`welcome-screen ${
+        isFadingOut ? "welcome-screen--fade-out" : ""
+      }`}
+    >
       {/* Decorative pulse circles */}
       <div className="welcome-ripple-ring ripple-1" />
       <div className="welcome-ripple-ring ripple-2" />
@@ -98,9 +105,7 @@ export function WelcomeAnimation({ patient, onComplete }: WelcomeAnimationProps)
         <h1 className="welcome-main-title">
           Welcome to <span className="highlight-blue">AI Medicine</span>
         </h1>
-        <h2 className="welcome-sub-title">
-          Clinical Decision Support
-        </h2>
+        <h2 className="welcome-sub-title">Clinical Decision Support</h2>
 
         {/* Patient Greeting */}
         <div className="welcome-patient-badge">
@@ -145,5 +150,5 @@ export function WelcomeAnimation({ patient, onComplete }: WelcomeAnimationProps)
         </button>
       </div>
     </div>
-  );
+  )
 }

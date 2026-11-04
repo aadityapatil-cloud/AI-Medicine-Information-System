@@ -1,4 +1,4 @@
-import { useState, useId } from "react";
+import { useState, useId } from "react"
 import {
   loginPatient,
   registerPatient,
@@ -6,15 +6,15 @@ import {
   verifyMobileNumber,
   sendRegistrationOtp,
   verifyRegistrationOtp,
-} from "../api";
-import { translations, type Language } from "../translations";
-import { LanguageSelector } from "./LanguageSelector";
-import type { PatientUser } from "../types";
+} from "../api"
+import { translations, type Language } from "../translations"
+import { LanguageSelector } from "./LanguageSelector"
+import type { PatientUser } from "../types"
 
 interface AuthPageProps {
-  onAuthSuccess: (user: PatientUser) => void;
-  lang?: Language;
-  onLanguageChange?: (lang: Language) => void;
+  onAuthSuccess: (user: PatientUser) => void
+  lang?: Language
+  onLanguageChange?: (lang: Language) => void
 }
 
 export function AuthPage({
@@ -22,177 +22,184 @@ export function AuthPage({
   lang = "en",
   onLanguageChange,
 }: AuthPageProps) {
-  const t = translations[lang] || translations.en;
-  const [mode, setMode] = useState<"login" | "signup" | "forgot" | "forgot-mobile">("login");
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const t = translations[lang] || translations.en
+  const [mode, setMode] =
+    useState<"login" | "signup" | "forgot" | "forgot-mobile">("login")
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   // Form fields for login & signup
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [dob, setDob] = useState("");
-  const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [fullName, setFullName] = useState("")
+  const [dob, setDob] = useState("")
+  const [mobile, setMobile] = useState("")
 
   // Form field for forgot password via mobile
-  const [forgotMobile, setForgotMobile] = useState("");
+  const [forgotMobile, setForgotMobile] = useState("")
 
   // Form fields for password reset
-  const [resetEmail, setResetEmail] = useState("");
-  const [resetDob, setResetDob] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("")
+  const [resetDob, setResetDob] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmNewPassword, setConfirmNewPassword] = useState("")
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false)
 
   // UI state
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   // Unique IDs for accessibility
-  const emailId = useId();
-  const passwordId = useId();
-  const fullNameId = useId();
-  const dobId = useId();
-  const mobileId = useId();
-  const confirmPasswordId = useId();
+  const emailId = useId()
+  const passwordId = useId()
+  const fullNameId = useId()
+  const dobId = useId()
+  const mobileId = useId()
+  const confirmPasswordId = useId()
 
-  const resetEmailId = useId();
-  const resetDobId = useId();
-  const newPasswordId = useId();
-  const confirmNewPasswordId = useId();
-  const forgotMobileId = useId();
+  const resetEmailId = useId()
+  const resetDobId = useId()
+  const newPasswordId = useId()
+  const confirmNewPasswordId = useId()
+  const forgotMobileId = useId()
 
   // Calculate live age on frontend for instant feedback
-  let calculatedAge: number | null = null;
-  let ageValidationError: string | null = null;
+  let calculatedAge: number | null = null
+  let ageValidationError: string | null = null
 
   if (dob) {
-    const dobDate = new Date(dob);
+    const dobDate = new Date(dob)
     if (!isNaN(dobDate.getTime())) {
-      const today = new Date();
+      const today = new Date()
       if (dobDate > today) {
-        ageValidationError = "Date of birth cannot be in the future.";
+        ageValidationError = "Date of birth cannot be in the future."
       } else {
-        let age = today.getFullYear() - dobDate.getFullYear();
-        const m = today.getMonth() - dobDate.getMonth();
+        let age = today.getFullYear() - dobDate.getFullYear()
+        const m = today.getMonth() - dobDate.getMonth()
         if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
-          age--;
+          age--
         }
-        calculatedAge = age;
+        calculatedAge = age
         if (age < 18) {
-          ageValidationError = `Registration requires patients to be at least 18 years of age (current age: ${age}).`;
+          ageValidationError = `Registration requires patients to be at least 18 years of age (current age: ${age}).`
         }
       }
     }
   }
 
-  const handleSwitchMode = (newMode: "login" | "signup" | "forgot" | "forgot-mobile") => {
-    setMode(newMode);
-    setErrorMessage(null);
-    setSuccessMessage(null);
-  };
+  const handleSwitchMode = (
+    newMode: "login" | "signup" | "forgot" | "forgot-mobile",
+  ) => {
+    setMode(newMode)
+    setErrorMessage(null)
+    setSuccessMessage(null)
+  }
 
   const handleForgotMobileSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-    setSuccessMessage(null);
+    e.preventDefault()
+    setErrorMessage(null)
+    setSuccessMessage(null)
 
-    const trimmed = forgotMobile.trim();
+    const trimmed = forgotMobile.trim()
     if (!trimmed) {
-      setErrorMessage("Please enter your registered mobile number.");
-      return;
+      setErrorMessage("Please enter your registered mobile number.")
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
     try {
-      const res = await verifyMobileNumber(trimmed);
-      setSuccessMessage("Mobile number verified successfully! Redirecting to dashboard…");
+      const res = await verifyMobileNumber(trimmed)
+      setSuccessMessage(
+        "Mobile number verified successfully! Redirecting to dashboard…",
+      )
       setTimeout(() => {
-        onAuthSuccess(res.patient);
-      }, 400);
+        onAuthSuccess(res.patient)
+      }, 400)
     } catch (err: any) {
       setErrorMessage(
-        err?.message || "Verification failed. The mobile number could not be verified with our records."
-      );
+        err?.message ||
+          "Verification failed. The mobile number could not be verified with our records.",
+      )
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-    setSuccessMessage(null);
+    e.preventDefault()
+    setErrorMessage(null)
+    setSuccessMessage(null)
 
     if (!email.trim() || !password) {
-      setErrorMessage("Please enter both email and password.");
-      return;
+      setErrorMessage("Please enter both email and password.")
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
     try {
       const res = await loginPatient({
         email: email.trim(),
         password,
-      });
-      setSuccessMessage(`Welcome back, ${res.patient.full_name}!`);
+      })
+      setSuccessMessage(`Welcome back, ${res.patient.full_name}!`)
       setTimeout(() => {
-        onAuthSuccess(res.patient);
-      }, 350);
+        onAuthSuccess(res.patient)
+      }, 350)
     } catch (err: any) {
       setErrorMessage(
-        err?.message || "Invalid email or password. Please verify your credentials."
-      );
+        err?.message ||
+          "Invalid email or password. Please verify your credentials.",
+      )
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleSignupSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-    setSuccessMessage(null);
+    e.preventDefault()
+    setErrorMessage(null)
+    setSuccessMessage(null)
 
     // Frontend validations
     if (!fullName.trim()) {
-      setErrorMessage("Please enter your full name.");
-      return;
+      setErrorMessage("Please enter your full name.")
+      return
     }
 
     if (!dob) {
-      setErrorMessage("Please select your date of birth.");
-      return;
+      setErrorMessage("Please select your date of birth.")
+      return
     }
 
     if (ageValidationError) {
-      setErrorMessage(ageValidationError);
-      return;
+      setErrorMessage(ageValidationError)
+      return
     }
 
     if (!mobile.trim()) {
-      setErrorMessage("Please enter your mobile phone number.");
-      return;
+      setErrorMessage("Please enter your mobile phone number.")
+      return
     }
 
     if (!email.trim()) {
-      setErrorMessage("Please enter a valid email address.");
-      return;
+      setErrorMessage("Please enter a valid email address.")
+      return
     }
 
     if (!password || password.length < 6) {
-      setErrorMessage("Password must be at least 6 characters long.");
-      return;
+      setErrorMessage("Password must be at least 6 characters long.")
+      return
     }
 
     if (password !== confirmPassword) {
-      setErrorMessage("Passwords do not match.");
-      return;
+      setErrorMessage("Passwords do not match.")
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
     try {
       const res = await registerPatient({
         full_name: fullName.trim(),
@@ -203,75 +210,81 @@ export function AuthPage({
         medical_conditions: "None",
         password,
         confirm_password: confirmPassword,
-      });
+      })
 
-      setSuccessMessage("Account created successfully! Redirecting to login…");
+      setSuccessMessage("Account created successfully! Redirecting to login…")
       setTimeout(() => {
-        setMode("login");
-        setEmail(email.trim());
-        setPassword("");
-        setConfirmPassword("");
-        setFullName("");
-        setDob("");
-        setMobile("");
-        setErrorMessage(null);
-        setSuccessMessage(null);
-      }, 500);
+        setMode("login")
+        setEmail(email.trim())
+        setPassword("")
+        setConfirmPassword("")
+        setFullName("")
+        setDob("")
+        setMobile("")
+        setErrorMessage(null)
+        setSuccessMessage(null)
+      }, 500)
     } catch (err: any) {
       setErrorMessage(
-        err?.message || "Registration failed. Please check your inputs and try again."
-      );
+        err?.message ||
+          "Registration failed. Please check your inputs and try again.",
+      )
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleResetPasswordSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-    setSuccessMessage(null);
+    e.preventDefault()
+    setErrorMessage(null)
+    setSuccessMessage(null)
 
     if (!resetEmail.trim()) {
-      setErrorMessage("Please enter your registered email address.");
-      return;
+      setErrorMessage("Please enter your registered email address.")
+      return
     }
 
     if (!resetDob) {
-      setErrorMessage("Please select your registered date of birth for identity verification.");
-      return;
+      setErrorMessage(
+        "Please select your registered date of birth for identity verification.",
+      )
+      return
     }
 
     if (!newPassword || newPassword.length < 6) {
-      setErrorMessage("New password must be at least 6 characters long.");
-      return;
+      setErrorMessage("New password must be at least 6 characters long.")
+      return
     }
 
     if (newPassword !== confirmNewPassword) {
-      setErrorMessage("New password and confirmation password do not match.");
-      return;
+      setErrorMessage("New password and confirmation password do not match.")
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
     try {
       const res = await resetPatientPassword({
         email: resetEmail.trim(),
         dob: resetDob,
         new_password: newPassword,
         confirm_password: confirmNewPassword,
-      });
+      })
 
-      setSuccessMessage(res.message || "Password updated successfully! Please sign in with your new password.");
-      setEmail(resetEmail.trim());
-      setPassword("");
-      setMode("login");
+      setSuccessMessage(
+        res.message ||
+          "Password updated successfully! Please sign in with your new password.",
+      )
+      setEmail(resetEmail.trim())
+      setPassword("")
+      setMode("login")
     } catch (err: any) {
       setErrorMessage(
-        err?.message || "Password reset failed. Please check your details."
-      );
+        err?.message || "Password reset failed. Please check your details.",
+      )
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="auth-page">
@@ -306,24 +319,28 @@ export function AuthPage({
             {mode === "login"
               ? t.signInToAccount
               : mode === "signup"
-              ? t.patientRegistration
-              : mode === "forgot-mobile"
-              ? t.forgotPasswordTitle
-              : t.forgotPasswordTitle}
+                ? t.patientRegistration
+                : mode === "forgot-mobile"
+                  ? t.forgotPasswordTitle
+                  : t.forgotPasswordTitle}
           </h2>
           <p>
             {mode === "login"
               ? t.signInDesc
               : mode === "signup"
-              ? t.signUpDesc
-              : mode === "forgot-mobile"
-              ? t.forgotPasswordDesc
-              : t.forgotPasswordDesc}
+                ? t.signUpDesc
+                : mode === "forgot-mobile"
+                  ? t.forgotPasswordDesc
+                  : t.forgotPasswordDesc}
           </p>
         </div>
 
         {/* Tab switch */}
-        <div className="auth-tabs" role="tablist" aria-label="Authentication mode">
+        <div
+          className="auth-tabs"
+          role="tablist"
+          aria-label="Authentication mode"
+        >
           <button
             type="button"
             role="tab"
@@ -386,7 +403,10 @@ export function AuthPage({
         )}
 
         {successMessage && (
-          <div className="notice notice--info auth-alert auth-alert--success" role="status">
+          <div
+            className="notice notice--info auth-alert auth-alert--success"
+            role="status"
+          >
             <svg
               width="18"
               height="18"
@@ -448,8 +468,8 @@ export function AuthPage({
                   type="button"
                   className="forgot-password-link"
                   onClick={() => {
-                    setForgotMobile("");
-                    handleSwitchMode("forgot-mobile");
+                    setForgotMobile("")
+                    handleSwitchMode("forgot-mobile")
                   }}
                 >
                   {t.forgotPasswordLink}
@@ -507,10 +527,15 @@ export function AuthPage({
                 {calculatedAge !== null && (
                   <span
                     className={`age-badge ${
-                      calculatedAge >= 18 ? "age-badge--valid" : "age-badge--invalid"
+                      calculatedAge >= 18
+                        ? "age-badge--valid"
+                        : "age-badge--invalid"
                     }`}
                   >
-                    Age: {calculatedAge} {calculatedAge >= 18 ? `(${t.ageValidBadge})` : `(${t.ageInvalidBadge})`}
+                    Age: {calculatedAge}{" "}
+                    {calculatedAge >= 18
+                      ? `(${t.ageValidBadge})`
+                      : `(${t.ageInvalidBadge})`}
                   </span>
                 )}
               </div>
@@ -522,9 +547,7 @@ export function AuthPage({
                 max={new Date().toISOString().split("T")[0]}
                 required
               />
-              <span className="field-hint">
-                {t.dobHint}
-              </span>
+              <span className="field-hint">{t.dobHint}</span>
             </div>
 
             <div className="form-group">
@@ -577,7 +600,9 @@ export function AuthPage({
             </div>
 
             <div className="form-group">
-              <label htmlFor={confirmPasswordId}>{t.confirmPasswordLabel}</label>
+              <label htmlFor={confirmPasswordId}>
+                {t.confirmPasswordLabel}
+              </label>
               <div className="input-with-action">
                 <input
                   id={confirmPasswordId}
@@ -591,8 +616,12 @@ export function AuthPage({
                 <button
                   type="button"
                   className="password-toggle-btn"
-                  onClick={() => setShowConfirmNewPassword(!showConfirmPassword)}
-                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                  onClick={() =>
+                    setShowConfirmNewPassword(!showConfirmPassword)
+                  }
+                  aria-label={
+                    showConfirmPassword ? "Hide password" : "Show password"
+                  }
                 >
                   {showConfirmPassword ? "Hide" : "Show"}
                 </button>
@@ -629,7 +658,11 @@ export function AuthPage({
 
         {/* Forgot Password Form */}
         {mode === "forgot" && (
-          <form onSubmit={handleResetPasswordSubmit} className="auth-form" noValidate>
+          <form
+            onSubmit={handleResetPasswordSubmit}
+            className="auth-form"
+            noValidate
+          >
             <div className="form-group">
               <label htmlFor={resetEmailId}>Registered Email Address</label>
               <input
@@ -644,7 +677,9 @@ export function AuthPage({
             </div>
 
             <div className="form-group">
-              <label htmlFor={resetDobId}>Date of Birth (Identity Verification)</label>
+              <label htmlFor={resetDobId}>
+                Date of Birth (Identity Verification)
+              </label>
               <input
                 id={resetDobId}
                 type="date"
@@ -654,7 +689,8 @@ export function AuthPage({
                 required
               />
               <span className="field-hint">
-                Security check: Must match the birth date registered with your account.
+                Security check: Must match the birth date registered with your
+                account.
               </span>
             </div>
 
@@ -674,7 +710,9 @@ export function AuthPage({
                   type="button"
                   className="password-toggle-btn"
                   onClick={() => setShowNewPassword(!showNewPassword)}
-                  aria-label={showNewPassword ? "Hide password" : "Show password"}
+                  aria-label={
+                    showNewPassword ? "Hide password" : "Show password"
+                  }
                 >
                   {showNewPassword ? "Hide" : "Show"}
                 </button>
@@ -696,8 +734,12 @@ export function AuthPage({
                 <button
                   type="button"
                   className="password-toggle-btn"
-                  onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
-                  aria-label={showConfirmNewPassword ? "Hide password" : "Show password"}
+                  onClick={() =>
+                    setShowConfirmNewPassword(!showConfirmNewPassword)
+                  }
+                  aria-label={
+                    showConfirmNewPassword ? "Hide password" : "Show password"
+                  }
                 >
                   {showConfirmNewPassword ? "Hide" : "Show"}
                 </button>
@@ -734,7 +776,11 @@ export function AuthPage({
 
         {/* Forgot Password Form via Mobile Number Verification */}
         {mode === "forgot-mobile" && (
-          <form onSubmit={handleForgotMobileSubmit} className="auth-form" noValidate>
+          <form
+            onSubmit={handleForgotMobileSubmit}
+            className="auth-form"
+            noValidate
+          >
             <div className="form-group">
               <label htmlFor={forgotMobileId}>{t.registeredMobileLabel}</label>
               <input
@@ -747,9 +793,7 @@ export function AuthPage({
                 required
                 autoFocus
               />
-              <span className="field-hint">
-                {t.registeredMobileHint}
-              </span>
+              <span className="field-hint">{t.registeredMobileHint}</span>
             </div>
 
             <button
@@ -792,20 +836,16 @@ export function AuthPage({
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
                 <path d="m9 12 2 2 4-4" />
               </svg>
-              <span>
-                {t.securityNote}
-              </span>
+              <span>{t.securityNote}</span>
             </div>
           </form>
         )}
 
         {/* Disclaimer footer */}
         <div className="auth-disclaimer">
-          <small>
-            {t.disclaimerText}
-          </small>
+          <small>{t.disclaimerText}</small>
         </div>
       </div>
     </div>
-  );
+  )
 }

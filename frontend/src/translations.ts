@@ -1,103 +1,103 @@
-export type Language = "en" | "mr" | "hi";
+export type Language = "en" | "mr" | "hi"
 
 export interface Translations {
   // Brand & Header
-  brandTitle: string;
-  brandSubtitle: string;
-  clinicalSupport: string;
-  searchPlaceholder: string;
-  onlineIndicator: string;
+  brandTitle: string
+  brandSubtitle: string
+  clinicalSupport: string
+  searchPlaceholder: string
+  onlineIndicator: string
 
   // Navigation
-  navDashboard: string;
-  navChecker: string;
-  navResults: string;
-  navMedicines: string;
-  navAbout: string;
-  signOut: string;
-  patientAccount: string;
+  navDashboard: string
+  navChecker: string
+  navResults: string
+  navMedicines: string
+  navAbout: string
+  signOut: string
+  patientAccount: string
 
   // Screen titles & subtitles
-  dashboardTitle: string;
-  dashboardSubtitle: string;
-  checkerTitle: string;
-  checkerSubtitle: string;
-  resultsTitle: string;
-  resultsSubtitle: string;
-  medicinesTitle: string;
-  medicinesSubtitle: string;
-  aboutTitle: string;
-  aboutSubtitle: string;
+  dashboardTitle: string
+  dashboardSubtitle: string
+  checkerTitle: string
+  checkerSubtitle: string
+  resultsTitle: string
+  resultsSubtitle: string
+  medicinesTitle: string
+  medicinesSubtitle: string
+  aboutTitle: string
+  aboutSubtitle: string
 
   // Auth Page
-  signInToAccount: string;
-  patientRegistration: string;
-  forgotPasswordTitle: string;
-  signInDesc: string;
-  signUpDesc: string;
-  forgotPasswordDesc: string;
-  signInTab: string;
-  signUpTab: string;
-  forgotPasswordTab: string;
-  emailLabel: string;
-  passwordLabel: string;
-  forgotPasswordLink: string;
-  signInBtn: string;
-  signingInBtn: string;
-  noAccountPrompt: string;
-  createAccountLink: string;
-  fullNameLabel: string;
-  dobLabel: string;
-  ageValidBadge: string;
-  ageInvalidBadge: string;
-  dobHint: string;
-  mobileLabel: string;
-  confirmPasswordLabel: string;
-  createAccountBtn: string;
-  creatingAccountBtn: string;
-  alreadyRegisteredPrompt: string;
-  signInHereLink: string;
-  registeredMobileLabel: string;
-  registeredMobileHint: string;
-  okBtn: string;
-  verifyingBtn: string;
-  rememberPasswordPrompt: string;
-  backToSignInBtn: string;
-  securityNote: string;
-  disclaimerText: string;
+  signInToAccount: string
+  patientRegistration: string
+  forgotPasswordTitle: string
+  signInDesc: string
+  signUpDesc: string
+  forgotPasswordDesc: string
+  signInTab: string
+  signUpTab: string
+  forgotPasswordTab: string
+  emailLabel: string
+  passwordLabel: string
+  forgotPasswordLink: string
+  signInBtn: string
+  signingInBtn: string
+  noAccountPrompt: string
+  createAccountLink: string
+  fullNameLabel: string
+  dobLabel: string
+  ageValidBadge: string
+  ageInvalidBadge: string
+  dobHint: string
+  mobileLabel: string
+  confirmPasswordLabel: string
+  createAccountBtn: string
+  creatingAccountBtn: string
+  alreadyRegisteredPrompt: string
+  signInHereLink: string
+  registeredMobileLabel: string
+  registeredMobileHint: string
+  okBtn: string
+  verifyingBtn: string
+  rememberPasswordPrompt: string
+  backToSignInBtn: string
+  securityNote: string
+  disclaimerText: string
 
   // Welcome Popup
-  welcome: string;
-  systemName: string;
-  sessionAuthenticated: string;
-  welcomeDesc: string;
-  dismissingIn: string;
-  enteringDashboard: string;
-  enterNowBtn: string;
+  welcome: string
+  systemName: string
+  sessionAuthenticated: string
+  welcomeDesc: string
+  dismissingIn: string
+  enteringDashboard: string
+  enterNowBtn: string
 
   // Symptom panel & actions
-  symptomInputKicker: string;
-  selectSymptomsTitle: string;
-  selectSymptomsSubtitle: string;
-  clearAllBtn: string;
-  symptomSearchPlaceholder: string;
-  addSymptomText: string;
-  popularLabel: string;
-  selectedSymptomsLabel: string;
-  noSymptomsSelected: string;
-  runAnalysisBtn: string;
-  analysingBtn: string;
-  atLeastOneSymptomPrompt: string;
+  symptomInputKicker: string
+  selectSymptomsTitle: string
+  selectSymptomsSubtitle: string
+  clearAllBtn: string
+  symptomSearchPlaceholder: string
+  addSymptomText: string
+  popularLabel: string
+  selectedSymptomsLabel: string
+  noSymptomsSelected: string
+  runAnalysisBtn: string
+  analysingBtn: string
+  atLeastOneSymptomPrompt: string
 
   // Feature cards
-  featureConditionTitle: string;
-  featureConditionText: string;
-  featureXaiTitle: string;
-  featureXaiText: string;
-  featureMedicineTitle: string;
-  featureMedicineText: string;
-  featureSafetyTitle: string;
-  featureSafetyText: string;
+  featureConditionTitle: string
+  featureConditionText: string
+  featureXaiTitle: string
+  featureXaiText: string
+  featureMedicineTitle: string
+  featureMedicineText: string
+  featureSafetyTitle: string
+  featureSafetyText: string
 }
 
 export const translations: Record<Language, Translations> = {
@@ -119,20 +119,27 @@ export const translations: Record<Language, Translations> = {
     dashboardTitle: "Healthcare Analytics Dashboard",
     dashboardSubtitle: "AI-Powered Medical Decision Support System",
     checkerTitle: "Symptom Checker & Analysis",
-    checkerSubtitle: "132 Clinical Features • Real-Time Machine Learning Inference",
+    checkerSubtitle:
+      "132 Clinical Features • Real-Time Machine Learning Inference",
     resultsTitle: "Prediction & Explainability Results",
-    resultsSubtitle: "Multi-Class Logistic Regression • XAI Attribution • Medicine Safety",
+    resultsSubtitle:
+      "Multi-Class Logistic Regression • XAI Attribution • Medicine Safety",
     medicinesTitle: "Medicine Information Explorer",
-    medicinesSubtitle: "Verified Dataset Formulations, Side Effects & Contraindications",
+    medicinesSubtitle:
+      "Verified Dataset Formulations, Side Effects & Contraindications",
     aboutTitle: "Project Methodology & Architecture",
-    aboutSubtitle: "Academic Decision Support Prototype & Responsible AI Standards",
+    aboutSubtitle:
+      "Academic Decision Support Prototype & Responsible AI Standards",
 
     signInToAccount: "Sign In to Your Account",
     patientRegistration: "Patient Registration",
     forgotPasswordTitle: "Forgot Password",
-    signInDesc: "Access AI-powered symptom analysis, model predictions, and safety verification.",
-    signUpDesc: "Create an account to evaluate symptoms and access personalized clinical support.",
-    forgotPasswordDesc: "Enter your registered mobile number to verify your account and access your dashboard.",
+    signInDesc:
+      "Access AI-powered symptom analysis, model predictions, and safety verification.",
+    signUpDesc:
+      "Create an account to evaluate symptoms and access personalized clinical support.",
+    forgotPasswordDesc:
+      "Enter your registered mobile number to verify your account and access your dashboard.",
     signInTab: "Sign In",
     signUpTab: "Sign Up",
     forgotPasswordTab: "Forgot Password",
@@ -147,7 +154,8 @@ export const translations: Record<Language, Translations> = {
     dobLabel: "Date of Birth",
     ageValidBadge: "Eligible",
     ageInvalidBadge: "Under 18",
-    dobHint: "Must be at least 18 years old to register. Calculated securely from your birth date.",
+    dobHint:
+      "Must be at least 18 years old to register. Calculated securely from your birth date.",
     mobileLabel: "Mobile Number",
     confirmPasswordLabel: "Confirm Password",
     createAccountBtn: "Create Patient Account",
@@ -155,37 +163,45 @@ export const translations: Record<Language, Translations> = {
     alreadyRegisteredPrompt: "Already registered?",
     signInHereLink: "Sign in here",
     registeredMobileLabel: "Registered Mobile Number",
-    registeredMobileHint: "Enter the mobile number registered during your account signup to verify your identity.",
+    registeredMobileHint:
+      "Enter the mobile number registered during your account signup to verify your identity.",
     okBtn: "OK",
     verifyingBtn: "Verifying…",
     rememberPasswordPrompt: "Remembered your password?",
     backToSignInBtn: "Back to Sign In",
-    securityNote: "Security note: Mobile verification is validated on the backend against your registered patient profile. Production systems require SMS OTP authentication.",
-    disclaimerText: "Educational AI decision-support platform. This system does not provide medical diagnoses or prescriptions. Minimum age requirement is 18 years.",
+    securityNote:
+      "Security note: Mobile verification is validated on the backend against your registered patient profile. Production systems require SMS OTP authentication.",
+    disclaimerText:
+      "Educational AI decision-support platform. This system does not provide medical diagnoses or prescriptions. Minimum age requirement is 18 years.",
 
     welcome: "Welcome",
     systemName: "AI Medicine Recommendation System",
     sessionAuthenticated: "Session Authenticated",
-    welcomeDesc: "Your clinical analytics dashboard is ready with 132 machine learning symptom inference features and safety verification.",
+    welcomeDesc:
+      "Your clinical analytics dashboard is ready with 132 machine learning symptom inference features and safety verification.",
     dismissingIn: "Dismissing in",
     enteringDashboard: "Entering dashboard…",
     enterNowBtn: "Enter Dashboard →",
 
     symptomInputKicker: "Symptom input",
     selectSymptomsTitle: "Select what you are experiencing",
-    selectSymptomsSubtitle: "Search across 132 model-supported symptoms. You can remove symptoms at any time.",
+    selectSymptomsSubtitle:
+      "Search across 132 model-supported symptoms. You can remove symptoms at any time.",
     clearAllBtn: "Clear all",
-    symptomSearchPlaceholder: "Search symptoms, e.g. itching, skin rash, mild fever, cough",
+    symptomSearchPlaceholder:
+      "Search symptoms, e.g. itching, skin rash, mild fever, cough",
     addSymptomText: "Add symptom",
     popularLabel: "Popular:",
     selectedSymptomsLabel: "Selected Symptoms",
-    noSymptomsSelected: "No symptoms selected yet. Choose from above to begin analysis.",
+    noSymptomsSelected:
+      "No symptoms selected yet. Choose from above to begin analysis.",
     runAnalysisBtn: "Run Clinical Analysis",
     analysingBtn: "Evaluating symptoms with ML model…",
     atLeastOneSymptomPrompt: "Select at least one symptom before continuing.",
 
     featureConditionTitle: "Condition Prediction",
-    featureConditionText: "Explore model-based patterns from selected symptoms.",
+    featureConditionText:
+      "Explore model-based patterns from selected symptoms.",
     featureXaiTitle: "Explainable AI",
     featureXaiText: "See which inputs influenced the model's output.",
     featureMedicineTitle: "Medicine Information",
@@ -223,9 +239,11 @@ export const translations: Record<Language, Translations> = {
     signInToAccount: "तुमच्या खात्यात साइन इन करा",
     patientRegistration: "नवीन रुग्ण नोंदणी",
     forgotPasswordTitle: "पासवर्ड विसरलात?",
-    signInDesc: "एआय-सक्षम लक्षण विश्लेषण, मॉडेल अंदाज आणि औषध सुरक्षिततेसाठी प्रवेश मिळवा.",
+    signInDesc:
+      "एआय-सक्षम लक्षण विश्लेषण, मॉडेल अंदाज आणि औषध सुरक्षिततेसाठी प्रवेश मिळवा.",
     signUpDesc: "लक्षणे तपासण्यासाठी आणि वैयक्तिकृत क्लिनिकल मदतीसाठी खाते तयार करा.",
-    forgotPasswordDesc: "आपली ओळख पडताळण्यासाठी आणि डॅशबोर्डवर जाण्यासाठी नोंदणीकृत मोबाईल नंबर टाका.",
+    forgotPasswordDesc:
+      "आपली ओळख पडताळण्यासाठी आणि डॅशबोर्डवर जाण्यासाठी नोंदणीकृत मोबाईल नंबर टाका.",
     signInTab: "साइन इन",
     signUpTab: "नोंदणी (Sign Up)",
     forgotPasswordTab: "पासवर्ड विसरलात",
@@ -248,25 +266,30 @@ export const translations: Record<Language, Translations> = {
     alreadyRegisteredPrompt: "आधीच नोंदणी झाली आहे?",
     signInHereLink: "येथे साइन इन करा",
     registeredMobileLabel: "नोंदणीकृत मोबाईल नंबर",
-    registeredMobileHint: "ओळख पडताळणीसाठी साइनअप दरम्यान नोंदवलेला मोबाईल नंबर टाका.",
+    registeredMobileHint:
+      "ओळख पडताळणीसाठी साइनअप दरम्यान नोंदवलेला मोबाईल नंबर टाका.",
     okBtn: "ओके (OK)",
     verifyingBtn: "पडताळणी सुरू आहे…",
     rememberPasswordPrompt: "पासवर्ड आठवला का?",
     backToSignInBtn: "साइन इन वर परत जा",
-    securityNote: "सुरक्षा टीप: मोबाईल पडताळणी सुरक्षित रुग्ण डेटाबेसमधून केली जाते. लाईव्ह सिस्टीममध्ये एसएमएस ओटीपी आवश्यक असतो.",
-    disclaimerText: "शैक्षणिक एआय निर्णय-समर्थन व्यासपीठ. ही प्रणाली वैद्यकीय निदान किंवा प्रिस्क्रिप्शन देत नाही. किमान वय १८ वर्षे असणे आवश्यक आहे.",
+    securityNote:
+      "सुरक्षा टीप: मोबाईल पडताळणी सुरक्षित रुग्ण डेटाबेसमधून केली जाते. लाईव्ह सिस्टीममध्ये एसएमएस ओटीपी आवश्यक असतो.",
+    disclaimerText:
+      "शैक्षणिक एआय निर्णय-समर्थन व्यासपीठ. ही प्रणाली वैद्यकीय निदान किंवा प्रिस्क्रिप्शन देत नाही. किमान वय १८ वर्षे असणे आवश्यक आहे.",
 
     welcome: "स्वागत आहे",
     systemName: "एआय औषध शिफारस प्रणाली",
     sessionAuthenticated: "सत्र प्रमाणीकृत झाले",
-    welcomeDesc: "आपला क्लिनिकल डॅशबोर्ड १३२ मशीन लर्निंग लक्षण मॉडेल आणि सुरक्षा पडताळणीसह सज्ज आहे.",
+    welcomeDesc:
+      "आपला क्लिनिकल डॅशबोर्ड १३२ मशीन लर्निंग लक्षण मॉडेल आणि सुरक्षा पडताळणीसह सज्ज आहे.",
     dismissingIn: "आपोआप बंद होत आहे",
     enteringDashboard: "डॅशबोर्ड सुरू होत आहे…",
     enterNowBtn: "डॅशबोर्डवर जा →",
 
     symptomInputKicker: "लक्षण इनपुट",
     selectSymptomsTitle: "तुम्हाला जाणवणारी लक्षणे निवडा",
-    selectSymptomsSubtitle: "१३२ समर्थित लक्षणांमधून शोधा. तुम्ही लक्षणे कधीही बदलू शकता.",
+    selectSymptomsSubtitle:
+      "१३२ समर्थित लक्षणांमधून शोधा. तुम्ही लक्षणे कधीही बदलू शकता.",
     clearAllBtn: "सर्व काढा",
     symptomSearchPlaceholder: "लक्षणे शोधा, उदा. खाज सुटणे, पुरळ, ताप, खोकला",
     addSymptomText: "लक्षण जोडा",
@@ -316,9 +339,12 @@ export const translations: Record<Language, Translations> = {
     signInToAccount: "अपने खाते में साइन इन करें",
     patientRegistration: "मरीज पंजीकरण",
     forgotPasswordTitle: "पासवर्ड भूल गए?",
-    signInDesc: "एआई-संचालित लक्षण विश्लेषण, मॉडल पूर्वानुमान और सुरक्षा सत्यापन प्राप्त करें।",
-    signUpDesc: "लक्षणों का मूल्यांकन करने और व्यक्तिगत क्लिनिकल सहायता के लिए खाता बनाएं।",
-    forgotPasswordDesc: "अपनी पहचान सत्यापित करने और डैशबोर्ड तक पहुंचने के लिए पंजीकृत मोबाइल नंबर दर्ज करें।",
+    signInDesc:
+      "एआई-संचालित लक्षण विश्लेषण, मॉडल पूर्वानुमान और सुरक्षा सत्यापन प्राप्त करें।",
+    signUpDesc:
+      "लक्षणों का मूल्यांकन करने और व्यक्तिगत क्लिनिकल सहायता के लिए खाता बनाएं।",
+    forgotPasswordDesc:
+      "अपनी पहचान सत्यापित करने और डैशबोर्ड तक पहुंचने के लिए पंजीकृत मोबाइल नंबर दर्ज करें।",
     signInTab: "साइन इन",
     signUpTab: "पंजीकरण (Sign Up)",
     forgotPasswordTab: "पासवर्ड भूल गए",
@@ -333,7 +359,8 @@ export const translations: Record<Language, Translations> = {
     dobLabel: "जन्म तिथि",
     ageValidBadge: "पात्र (18+ वर्ष)",
     ageInvalidBadge: "18 से कम",
-    dobHint: "पंजीकरण के लिए न्यूनतम आयु 18 वर्ष आवश्यक है। यह आपकी जन्मतिथि से सत्यापित होती है।",
+    dobHint:
+      "पंजीकरण के लिए न्यूनतम आयु 18 वर्ष आवश्यक है। यह आपकी जन्मतिथि से सत्यापित होती है।",
     mobileLabel: "मोबाइल नंबर",
     confirmPasswordLabel: "पासवर्ड की पुष्टि करें",
     createAccountBtn: "मरीज खाता बनाएं",
@@ -341,31 +368,37 @@ export const translations: Record<Language, Translations> = {
     alreadyRegisteredPrompt: "पहले से पंजीकृत हैं?",
     signInHereLink: "यहाँ साइन इन करें",
     registeredMobileLabel: "पंजीकृत मोबाइल नंबर",
-    registeredMobileHint: "पहचान सत्यापित करने के लिए साइनअप के समय का मोबाइल नंबर दर्ज करें।",
+    registeredMobileHint:
+      "पहचान सत्यापित करने के लिए साइनअप के समय का मोबाइल नंबर दर्ज करें।",
     okBtn: "ओके (OK)",
     verifyingBtn: "सत्यापन हो रहा है…",
     rememberPasswordPrompt: "पासवर्ड याद आ गया?",
     backToSignInBtn: "साइन इन पर वापस जाएं",
-    securityNote: "सुरक्षा नोट: मोबाइल सत्यापन पंजीकृत डेटाबेस से सुरक्षित रूप से किया जाता है। लाइव सिस्टम में एसएमएस ओटीपी आवश्यक होता है।",
-    disclaimerText: "शैक्षणिक एआई निर्णय-समर्थन मंच। यह प्रणाली चिकित्सीय निदान या नुस्खा प्रदान नहीं करती है। न्यूनतम आयु 18 वर्ष आवश्यक है।",
+    securityNote:
+      "सुरक्षा नोट: मोबाइल सत्यापन पंजीकृत डेटाबेस से सुरक्षित रूप से किया जाता है। लाइव सिस्टम में एसएमएस ओटीपी आवश्यक होता है।",
+    disclaimerText:
+      "शैक्षणिक एआई निर्णय-समर्थन मंच। यह प्रणाली चिकित्सीय निदान या नुस्खा प्रदान नहीं करती है। न्यूनतम आयु 18 वर्ष आवश्यक है।",
 
     welcome: "स्वागत है",
     systemName: "एआई दवा सिफारिश प्रणाली",
     sessionAuthenticated: "सत्र प्रमाणित हुआ",
-    welcomeDesc: "आपका क्लिनिकल डैशबोर्ड 132 मशीन लर्निंग लक्षण मॉडल और सुरक्षा जांच के साथ तैयार है।",
+    welcomeDesc:
+      "आपका क्लिनिकल डैशबोर्ड 132 मशीन लर्निंग लक्षण मॉडल और सुरक्षा जांच के साथ तैयार है।",
     dismissingIn: "स्वतः बंद हो रहा है",
     enteringDashboard: "डैशबोर्ड लोड हो रहा है…",
     enterNowBtn: "डैशबोर्ड में जाएं →",
 
     symptomInputKicker: "लक्षण इनपुट",
     selectSymptomsTitle: "आप जो महसूस कर रहे हैं उन लक्षणों को चुनें",
-    selectSymptomsSubtitle: "132 समर्थित लक्षणों में से खोजें। आप कभी भी लक्षण हटा या जोड़ सकते हैं।",
+    selectSymptomsSubtitle:
+      "132 समर्थित लक्षणों में से खोजें। आप कभी भी लक्षण हटा या जोड़ सकते हैं।",
     clearAllBtn: "सभी हटाएं",
     symptomSearchPlaceholder: "लक्षण खोजें, जैसे खुजली, त्वचा पर चकत्ते, बुखार, खांसी",
     addSymptomText: "लक्षण जोड़ें",
     popularLabel: "लोकप्रिय:",
     selectedSymptomsLabel: "चुने हुए लक्षण",
-    noSymptomsSelected: "अभी तक कोई लक्षण नहीं चुना गया। विश्लेषण शुरू करने के लिए ऊपर से चुनें।",
+    noSymptomsSelected:
+      "अभी तक कोई लक्षण नहीं चुना गया। विश्लेषण शुरू करने के लिए ऊपर से चुनें।",
     runAnalysisBtn: "क्लिनिकल विश्लेषण शुरू करें",
     analysingBtn: "मशीन लर्निंग मॉडल से लक्षणों का विश्लेषण हो रहा है…",
     atLeastOneSymptomPrompt: "आगे बढ़ने से पहले कृपया कम से कम एक लक्षण चुनें।",
@@ -379,25 +412,25 @@ export const translations: Record<Language, Translations> = {
     featureSafetyTitle: "सुरक्षा जानकारी",
     featureSafetyText: "दवाओं के दुष्प्रभाव और सुरक्षा चेतावनियों को ध्यान से पढ़ें।",
   },
-};
+}
 
-export const LANGUAGE_STORAGE_KEY = "ai_med_preferred_lang";
+export const LANGUAGE_STORAGE_KEY = "ai_med_preferred_lang"
 
 export function getStoredLanguage(): Language {
   try {
-    const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY)
     if (saved === "mr" || saved === "hi" || saved === "en") {
-      return saved;
+      return saved
     }
   } catch {
     // Ignore storage errors
   }
-  return "en";
+  return "en"
 }
 
 export function setStoredLanguage(lang: Language): void {
   try {
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang)
   } catch {
     // Ignore storage errors
   }
